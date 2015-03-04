@@ -4,7 +4,6 @@ var router = require("./router");
 var requestHanlders = require("./requestHandlers");
 
 var handle = {};
-handle["/"] = requestHanlders.start;
 handle["/register"] = requestHanlders.register;
 
 // Start the server using exported function
