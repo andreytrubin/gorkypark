@@ -12,7 +12,7 @@ function register(response, postData) {
 	} else {
 		// check if user with username already exists
 		// if the user already exists get error (return 400 bad request)
-		var incomingJson;
+		var incomingJson = null;
 		try {
 			incomingJson = eval('(' + postData + ')');
 		} catch (err) {

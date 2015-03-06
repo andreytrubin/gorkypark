@@ -1,6 +1,7 @@
 var http = require("http");
 var url = require("url");
-var Sequelize = require('sequelize');
+//var Sequelize = require('sequelize');
+var models = require('../models');
 
 // Module function to export
 function start(route, handle) {
@@ -25,20 +26,20 @@ function start(route, handle) {
 	}
 
 	// Create connection pool to database
-	var sequelize = new Sequelize("park", "park", "park", {
-			host: "localhost",
-			port: "3306",
-			dialect: "mysql",
-			pool: {
-				max: 5,
-				min: 1,
-				idle: 10000
-			}
-		}
-	);
+//	var sequelize = new Sequelize("park", "park", "park", {
+//			host: "localhost",
+//			port: "3306",
+//			dialect: "mysql",
+//			pool: {
+//				max: 5,
+//				min: 1,
+//				idle: 10000
+//			}
+//		}
+//	);
 	
 	// User model
-	var User = sequelize.define("user", {
+	/*var User = sequelize.define("user", {
 		id : {
 			type : Sequelize.INTEGER,
 			field: "idUser",
@@ -59,7 +60,8 @@ function start(route, handle) {
 		}
 	}, {
 		tableName: 'user'
-	});
+	});*/
+	var User = models.User;
 	
 	User.find({ where: {login: 'ayasenov'}, attributes: ["login", "firstName", "lastName"] }).then(function(user) {
 		console.log("User: " + user.login + " " + user.firstName + " " + user.lastName);
