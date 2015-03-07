@@ -1,7 +1,8 @@
 var http = require("http");
 var url = require("url");
+var models = require("./models");
+
 //var Sequelize = require('sequelize');
-var models = require('../models');
 
 // Module function to export
 function start(route, handle) {
