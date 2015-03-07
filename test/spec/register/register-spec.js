@@ -21,17 +21,19 @@ xdescribe('Unregistered user processing', function() {
     });
 });
 
-xdescribe('Registered user processing', function() {
+describe('Registered user processing', function() {
     it('Will proceed with bad request code for registered user', function(done) {
+    	var registerAyasenovResponse = JSON.parse(fs.readFileSync(SPEC_FILES+"registerAyasenovResponse.json", "utf8"));
+    	
         request.get(registerUrl, {json:true, body: registerAyasenov}, function(error, response, body) {
             expect(response.statusCode).toEqual(400);
-            expect(response.body).toEqual(registerAyasenov);
+            expect(response.body).toEqual(registerAyasenovResponse);
             done();
         });
     });
 });
 
-describe('User validation', function() {
+xdescribe('User validation', function() {
     it('Will proceed with bad request code for invalid user', function(done) {
         request.get(registerUrl, {json:true, body: registerInvalid}, function(error, response, body) {
             expect(response.statusCode).toEqual(400);
@@ -41,3 +43,4 @@ describe('User validation', function() {
         });
     });
 });
+

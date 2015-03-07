@@ -1,5 +1,6 @@
 var querystring = require("querystring");
 var fs = require("fs");
+var models = require("./models");
 
 function register(response, postData) {
 	// check if request is empty
@@ -36,34 +37,56 @@ function register(response, postData) {
 			response.end();
 		}
 
-		var login = incomingJson.user.login;
-
-		if (login != "ayasenov") {
-			// if user isn't exist then create it in db
-			// return 200
-
-			console.log("user " + login + " not registered yet");
-			response.writeHead(200, {
-				"Content-Type" : "text/json"
-			});
-			response.write(JSON.stringify(incomingJson));
-		} else {
-			console.log("ERROR: user " + login + " already registered");
-			response.writeHead(400, {
-				"Content-Type" : "text/json"
-			});
-			response.write(JSON.stringify(incomingJson));
-		}
-
+		var userLogin = incomingJson.user.login;
+		
+		models.User.find({ where: {login: userLogin} }).then(function(user) {
+			if (user != null) {
+				console.log("ERROR: User " + user.login + " already registered");
+				response.writeHead(400, {"Content-Type" : "text/json"});
+				response.write(JSON.stringify({"errors" : ["User with login ayasenov already registered"]}));
+				response.end();
+			} else {
+				console.log("INFO: Creating new user " + userLogin);
+				var incomingUser = incomingJson.user;
+				
+				model.Role.find({where:{name:"user"}}).then(function(role) {
+					incomingUser.setRole(role);
+					sequelize.sync();
+				});
+				
+				models.User.create(incomingUser).then(function(newUser) {
+					console.log("INFO: New user created: " + newUser.login);
+					
+					response.writeHead(200);
+					response.write(JSON.stringify(newUser));
+					response.end();
+				});
+			}
+		});
+		
+		//{
+//			if (login != "ayasenov") {
+//				// if user isn't exist then create it in db
+//				// return 200
+//
+//				console.log("user " + login + " not registered yet");
+//				response.writeHead(200, {
+//					"Content-Type" : "text/json"
+//				});
+//				response.write(JSON.stringify(incomingJson));
+//			} else {
+				
+//			}
+//		});
+			
+//			console.log(foundUser.login);
+//			response.writeHead(400, {
+//				"Content-Type" : "text/json"
+//			});
+//			
+//			
+//		}
 	}
-
-	/*var User = models.User;
-	
-	User.find({ where: {login: 'ayasenov'}, attributes: ["login", "firstName", "lastName"] }).then(function(user) {
-		console.log("User: " + user.login + " " + user.firstName + " " + user.lastName);
-	});*/
-	response.end();
-
 }
 
 function validateUser(user) {

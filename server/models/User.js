@@ -43,6 +43,8 @@ module.exports = function(sequelize, DataTypes){
 			field: "dob"
 		},
 	}, {
-		tableName: 'user'
+		tableName: 'user',
+		updatedAt: false,
+		createdAt: false
 	});
 };

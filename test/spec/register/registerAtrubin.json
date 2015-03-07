@@ -4,8 +4,9 @@
 		"login":"atrubin",
 		"password":"123",
 		"firstName":"Andrey",
-		"lastName":"Yasenov",
+		"lastName":"Trubin",
 		"email":"yasenov95@mail.ru",
-		"phone":"0507224531"
+		"phone":"0507224531",
+		"birthDate":"1977-11-18"
 	}
 }

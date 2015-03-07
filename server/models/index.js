@@ -17,7 +17,8 @@ var models = [
      "User",
      "Attraction",
      "Ticket",
-     "Transaction"
+     "Transaction",
+     "Role"
 ];
 
 // Models registration
@@ -33,6 +34,8 @@ models.forEach(function(model) {
 	  m.User.hasMany(m.Transaction);
 	  m.Transaction.hasMany(m.Ticket);
 	  m.Attraction.hasMany(m.Ticket);
+	  m.Role.belongsTo(m.User);
+	  m.User.hasMany(m.Role);
 }) (module.exports);
 
 // export connection

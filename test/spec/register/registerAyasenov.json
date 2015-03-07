@@ -1,11 +1,12 @@
 {
 "user" : 
 	{
-		"login":"ayasenov",
+		"login":"ayasenov1",
 		"password":"123",
 		"firstName":"Andrey",
 		"lastName":"Yasenov",
 		"email":"yasenov95@mail.ru",
-		"phone":"0507224531"
+		"phone":"0507224531",
+		"birthDate":"1995-11-13"
 	}
 }
