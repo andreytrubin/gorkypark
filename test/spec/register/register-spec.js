@@ -11,31 +11,32 @@ var registerInvalid = JSON.parse(fs.readFileSync(SPEC_FILES+"registerInvalid.jso
 
 var registerUrl="http://localhost:8888/register";
 
-//describe('Unregistered user processing', function() {
-//    it('Will proceed with user registration', function(done) {
-//        request.get(registerUrl, {json:true, body: registerAtrubin}, function(error, response, body) {
-//            expect(response.statusCode).toEqual(200);
-//            expect(response.body).toEqual(registerAtrubin);
-//            done();
-//        });
-//    });
-//});
-//
-//describe('Registered user processing', function() {
-//    it('Will proceed with bad request code for registered user', function(done) {
-//        request.get(registerUrl, {json:true, body: registerAyasenov}, function(error, response, body) {
-//            expect(response.statusCode).toEqual(400);
-//            expect(response.body).toEqual(registerAyasenov);
-//            done();
-//        });
-//    });
-//});
+xdescribe('Unregistered user processing', function() {
+    it('Will proceed with user registration', function(done) {
+        request.get(registerUrl, {json:true, body: registerAtrubin}, function(error, response, body) {
+            expect(response.statusCode).toEqual(200);
+            expect(response.body).toEqual(registerAtrubin);
+            done();
+        });
+    });
+});
+
+xdescribe('Registered user processing', function() {
+    it('Will proceed with bad request code for registered user', function(done) {
+        request.get(registerUrl, {json:true, body: registerAyasenov}, function(error, response, body) {
+            expect(response.statusCode).toEqual(400);
+            expect(response.body).toEqual(registerAyasenov);
+            done();
+        });
+    });
+});
 
 describe('User validation', function() {
     it('Will proceed with bad request code for invalid user', function(done) {
         request.get(registerUrl, {json:true, body: registerInvalid}, function(error, response, body) {
             expect(response.statusCode).toEqual(400);
-            expect(response.body).toEqual(registerInvalid);
+            var expectedResult = JSON.parse(fs.readFileSync(SPEC_FILES+"registerInvalidResponse.json", "utf8"));
+            expect(response.body).toEqual(expectedResult);
             done();
         });
     });

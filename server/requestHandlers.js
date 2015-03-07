@@ -32,7 +32,7 @@ function register(response, postData) {
 				"Content-Type" : "text/json"
 			});
 			console.log(e);
-			response.write(Error.message);
+			response.write(e.message);
 			response.end();
 		}
 
