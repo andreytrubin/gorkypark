@@ -22,7 +22,20 @@ function register(response, postData) {
 			});
 			response.end();
 		}
-		
+		try {
+			var errorsJSON = validateUser(incomingJson.user);
+			if (errorsJSON.errors.length > 0) {
+				throw new Error(JSON.stringify(errorsJSON));
+			}
+		} catch (e) {
+			response.writeHead(400, {
+				"Content-Type" : "text/json"
+			});
+			console.log(e);
+			response.write(Error.message);
+			response.end();
+		}
+
 		var login = incomingJson.user.login;
 
 		if (login != "ayasenov") {
@@ -43,8 +56,40 @@ function register(response, postData) {
 		}
 
 	}
+
+	/*var User = models.User;
+	
+	User.find({ where: {login: 'ayasenov'}, attributes: ["login", "firstName", "lastName"] }).then(function(user) {
+		console.log("User: " + user.login + " " + user.firstName + " " + user.lastName);
+	});*/
 	response.end();
 
 }
 
+function validateUser(user) {
+	var errors = [];
+	if (user == null) {
+		errors[errors.length] = "User object not supplied";
+		return {"errors" : errors};
+	}
+	if (user.login == null || user.login == "" ) {
+		errors[errors.length] = "Login must not be empty";
+	}
+	if (user.password == null || user.password == "" ) {
+		errors[errors.length] = "Password must not be empty";
+	}
+	if (user.firstName == null || user.firstName == "" ) {
+		errors[errors.length] = "First name must not be empty";
+	}
+	if (user.lastName == null || user.lastName == "" ) {
+		errors[errors.length] = "Last name must not be empty";
+	}
+	if (user.email == null || user.email == "" ) {
+		errors[errors.length] = "Email must not be empty";
+	}
+	if (user.birthDate == null || user.birthDate == "" ) {
+		errors[errors.length] = "Birthdate must not be empty";
+	}
+	return {"errors" : errors};
+}
 exports.register = register;
