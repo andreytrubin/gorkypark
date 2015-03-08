@@ -11,7 +11,7 @@ var registerInvalid = JSON.parse(fs.readFileSync(SPEC_FILES+"registerInvalid.jso
 
 var registerUrl="http://localhost:8888/register";
 
-xdescribe('Unregistered user processing', function() {
+describe('Unregistered user processing', function() {
     it('Will proceed with user registration', function(done) {
         request.get(registerUrl, {json:true, body: registerAtrubin}, function(error, response, body) {
             expect(response.statusCode).toEqual(200);
@@ -21,7 +21,7 @@ xdescribe('Unregistered user processing', function() {
     });
 });
 
-describe('Registered user processing', function() {
+xdescribe('Registered user processing', function() {
     it('Will proceed with bad request code for registered user', function(done) {
     	var registerAyasenovResponse = JSON.parse(fs.readFileSync(SPEC_FILES+"registerAyasenovResponse.json", "utf8"));
     	

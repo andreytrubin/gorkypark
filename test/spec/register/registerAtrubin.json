@@ -5,8 +5,10 @@
 		"password":"123",
 		"firstName":"Andrey",
 		"lastName":"Trubin",
-		"email":"yasenov95@mail.ru",
+		"email":"atruwork@gmail.com",
 		"phone":"0507224531",
+		"regDate":"1977-11-18",
+		"statusBanned": 0,
 		"birthDate":"1977-11-18"
 	}
 }

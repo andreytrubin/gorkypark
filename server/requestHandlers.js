@@ -13,6 +13,8 @@ function register(response, postData) {
 	} else {
 		// check if user with username already exists
 		// if the user already exists get error (return 400 bad request)
+	
+		//checking if incoming data is JSON
 		var incomingJson = null;
 		try {
 			incomingJson = eval('(' + postData + ')');
@@ -23,8 +25,11 @@ function register(response, postData) {
 			});
 			response.end();
 		}
+		
+		//user validation and sending errors array if they are
 		try {
 			var errorsJSON = validateUser(incomingJson.user);
+			console.log("==============" + errorsJSON.errors.length);
 			if (errorsJSON.errors.length > 0) {
 				throw new Error(JSON.stringify(errorsJSON));
 			}
@@ -35,34 +40,27 @@ function register(response, postData) {
 			console.log(e);
 			response.write(e.message);
 			response.end();
+			return 0;
 		}
-
-		var userLogin = incomingJson.user.login;
 		
-		models.User.find({ where: {login: userLogin} }).then(function(user) {
-			if (user != null) {
-				console.log("ERROR: User " + user.login + " already registered");
-				response.writeHead(400, {"Content-Type" : "text/json"});
-				response.write(JSON.stringify({"errors" : ["User with login ayasenov already registered"]}));
-				response.end();
-			} else {
+		var userLogin = incomingJson.user.login;
+
 				console.log("INFO: Creating new user " + userLogin);
 				var incomingUser = incomingJson.user;
 				
-				model.Role.find({where:{name:"user"}}).then(function(role) {
-					incomingUser.setRole(role);
-					sequelize.sync();
+				models.Role.find({where:{name:"user"}}).then(function(role) {
+					console.log(incomingUser);
 				});
-				
+
 				models.User.create(incomingUser).then(function(newUser) {
 					console.log("INFO: New user created: " + newUser.login);
-					
 					response.writeHead(200);
 					response.write(JSON.stringify(newUser));
 					response.end();
 				});
+				
 			}
-		});
+//		});
 		
 		//{
 //			if (login != "ayasenov") {
@@ -87,7 +85,7 @@ function register(response, postData) {
 //			
 //		}
 	}
-}
+//}
 
 function validateUser(user) {
 	var errors = [];
@@ -113,6 +111,24 @@ function validateUser(user) {
 	if (user.birthDate == null || user.birthDate == "" ) {
 		errors[errors.length] = "Birthdate must not be empty";
 	}
+	
+	var userLogin = user.login;
+	var userEmail = user.email;
+	
+	errors[errors.length] = models.User.find({ where: {login: userLogin} }).then(function(newUser, errors) {
+		if (newUser != null) {
+			console.log("ERROR: User " + newUser.login + " already registered");
+			return "User with such login already registered";
+		}
+	});
+	
+	errors[errors.length] = models.User.find({ where: {email: userEmail} }).then(function(newUser, errors) {
+		if (newUser != null) {
+			console.log("ERROR: Such email " + newUser.email + " already registered");
+			return "User with such email already registered";
+			
+		}
+	});
 	return {"errors" : errors};
 }
 exports.register = register;

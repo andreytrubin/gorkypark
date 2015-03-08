@@ -6,6 +6,12 @@ module.exports = function(sequelize, DataTypes){
 			primaryKey: true,
 			autoIncrement: true
 		},
+		idRole: {
+			type: DataTypes.INTEGER,
+			field: "idRole",
+			foreignKey: true,
+			defaultValue: 4
+		},
 		login: {
 			type: DataTypes.STRING,
 			field: "login"
@@ -24,7 +30,8 @@ module.exports = function(sequelize, DataTypes){
 		},
 		email: {
 			type: DataTypes.STRING,
-			field: "email"
+			field: "email",
+			unique: true
 		},
 		phone: {
 			type: DataTypes.STRING,
@@ -32,7 +39,7 @@ module.exports = function(sequelize, DataTypes){
 		},
 		regDate: {
 			type: DataTypes.DATE,
-			field: "reg_date"
+			field: "reg_date",
 		},
 		statusBanned: {
 			type: DataTypes.BOOLEAN,
