@@ -3,13 +3,9 @@ var fs = require("fs");
 var SPEC_FILES = "spec/register/";
 
 function getContent(path) {
-	return JSON.parse(fs.readFileSync(SPEC_FILES + path, "utf8"));
+	var result = JSON.parse(fs.readFileSync(SPEC_FILES + path, "utf8"));
+	return result;
 }
-//jasmine.getEnv().addReporter(new jasmine.ConsoleReporter(console.log));
-
-//var registerAtrubin = JSON.parse(fs.readFileSync(SPEC_FILES+"registerAtrubin.json", "utf8"));
-//var registerAyasenov = JSON.parse(fs.readFileSync(SPEC_FILES+"registerAyasenov.json", "utf8"));
-//var registerInvalid = JSON.parse(fs.readFileSync(SPEC_FILES+"registerInvalid.json", "utf8"));
 
 var registerAtrubin = getContent("registerAtrubin.json");
 var registerAyasenov = getContent("registerAyasenov.json");
@@ -20,8 +16,13 @@ var registerUrl = "http://localhost:8888/register";
 describe('Unregistered user processing', function() {
     it('Will proceed with user registration', function(done) {
         request.get(registerUrl, {json:true, body: registerAtrubin}, function(error, response, body) {
-            expect(response.statusCode).toEqual(200);
-//            expect(response.body).toEqual(registerAtrubin);
+        	var registerAtrubinResponse = getContent("registerAtrubinResponse.json");
+        	console.log(response.body);
+            var user = body;
+            
+        	expect(response.statusCode).toEqual(200);
+            expect(user.login).toEqual(registerAtrubinResponse.login);
+            expect(user.email).toEqual(registerAtrubinResponse.email);
             done();
         });
     });
