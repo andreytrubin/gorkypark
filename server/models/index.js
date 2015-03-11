@@ -28,14 +28,10 @@ models.forEach(function(model) {
 
 // Model relatipships registration
 (function(m) {
-//	  m.Transaction.belongsTo(m.User);
-//	  m.Attraction.belongsTo(m.Ticket);
-//	  m.Ticket.belongsTo(m.Transaction);
-	  m.User.hasMany(m.Transaction, {foreignKey: "idTransaction"});
-	  m.Transaction.hasMany(m.Ticket, {foreignKey: "idTicket"});
-	  m.Attraction.hasMany(m.Ticket, {foreignKey: "idTicket"});
+	  m.User.hasMany(m.Transaction, {foreignKey: "idTransaction", constraints: false});
+	  m.Transaction.hasMany(m.Ticket, {foreignKey: "idTicket", constraints: false});
+	  m.Attraction.hasMany(m.Ticket, {foreignKey: "idTicket", constraints: false});
 	  m.Role.hasMany(m.User, {foreignKey:"idRole", constraints: false });
-//	  m.User.belongsTo(m.Role);
 }) (module.exports);
 
 // export connection

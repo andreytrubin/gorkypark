@@ -55,7 +55,6 @@ function register(response, postData) {
 
 		models.Role.find({where : {name : "user"} }).then(function(role) {
 			incomingUser.idRole = role.id;
-			console.log("INCOMING USER IDROLE " + incomingUser.idRole);
 			
 			models.User.create(incomingUser).then(function(newUser) {
 				console.log("INFO: New user created: " + newUser.login);
@@ -64,11 +63,7 @@ function register(response, postData) {
 				response.end();
 			});
 		});
-
-		
-
 	}
-	// });
 
 	// {
 	// if (login != "ayasenov") {
