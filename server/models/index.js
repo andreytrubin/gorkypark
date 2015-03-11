@@ -31,10 +31,10 @@ models.forEach(function(model) {
 //	  m.Transaction.belongsTo(m.User);
 //	  m.Attraction.belongsTo(m.Ticket);
 //	  m.Ticket.belongsTo(m.Transaction);
-	  m.User.hasMany(m.Transaction, {foreigKey: "idTransaction"});
-	  m.Transaction.hasMany(m.Ticket, {foreigKey: "idTicket"});
-	  m.Attraction.hasMany(m.Ticket, {foreigKey: "idTicket"});
-	  m.Role.hasMany(m.User, {foreignKey: "idRole"});
+	  m.User.hasMany(m.Transaction, {foreignKey: "idTransaction"});
+	  m.Transaction.hasMany(m.Ticket, {foreignKey: "idTicket"});
+	  m.Attraction.hasMany(m.Ticket, {foreignKey: "idTicket"});
+	  m.Role.hasMany(m.User, {foreignKey:"idRole"});
 //	  m.User.belongsTo(m.Role);
 }) (module.exports);
 

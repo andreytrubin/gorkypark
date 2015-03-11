@@ -1,6 +1,7 @@
 var querystring = require("querystring");
 var fs = require("fs");
 var models = require("./models");
+var jsonParser = require("./jsonParser");
 
 function register(response, postData) {
 	// check if request is empty
@@ -10,21 +11,24 @@ function register(response, postData) {
 		response.writeHead(400, {
 			"Content-Type" : "text/json"
 		});
+		response.end();
 	} else {
 		// check if user with username already exists
 		// if the user already exists get error (return 400 bad request)
 	
 		//checking if incoming data is JSON
-		var incomingJson = null;
-		try {
-			incomingJson = eval('(' + postData + ')');
-		} catch (err) {
-			console.log("ERROR: " + err);
-			response.writeHead(400, {
-				"Content-Type" : "text/json"
-			});
-			response.end();
-		}
+//		var incomingJson = null;
+//		try {
+//			incomingJson = eval('(' + postData + ')');
+//		} catch (err) {
+//			console.log("ERROR: " + err);
+//			response.writeHead(400, {
+//				"Content-Type" : "text/json"
+//			});
+//			response.end();
+//			return 0;
+//		}
+		jsonParser.isJson(postData, response);
 		
 		//user validation and sending errors array if they are
 		try {
@@ -47,6 +51,7 @@ function register(response, postData) {
 
 				console.log("INFO: Creating new user " + userLogin);
 				var incomingUser = incomingJson.user;
+				incomingUser.statusBanned = 0;
 				
 				models.Role.find({where:{name:"user"}}).then(function(role) {
 					console.log(incomingUser);
@@ -118,17 +123,17 @@ function validateUser(user) {
 	errors[errors.length] = models.User.find({ where: {login: userLogin} }).then(function(newUser, errors) {
 		if (newUser != null) {
 			console.log("ERROR: User " + newUser.login + " already registered");
-			return "User with such login already registered";
+			return ("User with such login already registered");
 		}
 	});
-	
-	errors[errors.length] = models.User.find({ where: {email: userEmail} }).then(function(newUser, errors) {
-		if (newUser != null) {
-			console.log("ERROR: Such email " + newUser.email + " already registered");
-			return "User with such email already registered";
-			
-		}
-	});
+//	
+//	errors[errors.length] = models.User.find({ where: {email: userEmail} }).then(function(newUser, errors) {
+//		if (newUser != null) {
+//			console.log("ERROR: Such email " + newUser.email + " already registered");
+//			return "User with such email already registered";
+//			
+//		}
+//	});
 	return {"errors" : errors};
 }
 exports.register = register;
