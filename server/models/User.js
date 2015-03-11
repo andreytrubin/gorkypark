@@ -10,7 +10,6 @@ module.exports = function(sequelize, DataTypes){
 			type: DataTypes.INTEGER,
 			field: "idRole",
 			foreignKey: true,
-			defaultValue: 4
 		},
 		login: {
 			type: DataTypes.STRING,

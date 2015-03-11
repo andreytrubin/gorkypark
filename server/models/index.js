@@ -34,7 +34,7 @@ models.forEach(function(model) {
 	  m.User.hasMany(m.Transaction, {foreignKey: "idTransaction"});
 	  m.Transaction.hasMany(m.Ticket, {foreignKey: "idTicket"});
 	  m.Attraction.hasMany(m.Ticket, {foreignKey: "idTicket"});
-	  m.Role.hasMany(m.User, {foreignKey:"idRole"});
+	  m.Role.hasMany(m.User, {foreignKey:"idRole", constraints: false });
 //	  m.User.belongsTo(m.Role);
 }) (module.exports);
 
