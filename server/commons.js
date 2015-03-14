@@ -28,7 +28,17 @@ function handleError(err, code, response) {
 	response.end();
 }
 
+function success(response, content){
+	response.writeHead(200, {"Content-Type" : "text/json"});
+	if (content != null){
+		response.write(JSON.stringify(content));
+	}
+	response.end();
+	
+}
+
 exports.getJson = getJson;
 exports.badRequest = badRequest;
 exports.notFound = notFound;
 exports.internalServerError = internalServerError;
+exports.success = success;

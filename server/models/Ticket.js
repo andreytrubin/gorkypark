@@ -19,6 +19,8 @@ module.exports = function(sequelize, DataTypes){
 			field: "valid_date"
 		},
 	}, {
-		tableName: 'ticket'
+		tableName: 'ticket',
+		updatedAt: false,
+		createdAt: false
 	});
 };
