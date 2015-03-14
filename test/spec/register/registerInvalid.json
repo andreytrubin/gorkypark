@@ -1,0 +1,12 @@
+{
+"user" : 
+	{
+		"login":"",
+		"password":"",
+		"firstName":"",
+		"lastName":"",
+		"email":"",
+		"phone":"",
+		"dob":""
+	}
+}

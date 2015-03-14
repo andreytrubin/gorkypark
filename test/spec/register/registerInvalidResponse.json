@@ -1,0 +1,9 @@
+{ 
+"errors":
+   [ "Login must not be empty",
+     "Password must not be empty",
+     "First name must not be empty",
+     "Last name must not be empty",
+     "Email must not be empty",
+     "Birthdate must not be empty" ] 
+}
