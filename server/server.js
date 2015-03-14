@@ -1,5 +1,6 @@
 var http = require("http");
 var url = require("url");
+var querystring = require("querystring");
 
 // Module function to export
 function start(route, handle) {
@@ -8,6 +9,12 @@ function start(route, handle) {
 		var postData = "";
 		var pathname = url.parse(request.url).pathname;
 		console.log("Request for " + pathname + " received");
+		
+		
+		
+		
+//		query = querystring.parse(pathname);
+//		console.log(query);
 
 		request.setEncoding("utf8");
 
@@ -19,7 +26,11 @@ function start(route, handle) {
 
 		// End listener
 		request.addListener("end", function() {
-			route(handle, pathname, response, postData);
+			if (request.method == "GET") {
+				route(handle, pathname, response, request);
+			} else {
+				route(handle, pathname, response, postData);
+			}
 		});
 	}
 
