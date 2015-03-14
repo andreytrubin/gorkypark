@@ -35,7 +35,9 @@ module.exports = function(sequelize, DataTypes){
 			field: "price_child"
 		}
 	}, {
-		tableName: 'attraction'
+		tableName: 'attraction',
+		updatedAt: false,
+		createdAt: false
 	});
 };
 	

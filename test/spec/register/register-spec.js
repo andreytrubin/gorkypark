@@ -34,7 +34,7 @@ var registerInvalid = getContent("registerInvalid.json");
 
 var registerUrl = "http://localhost:8888/register";
 
-describe('Unregistered user processing', function() {
+xdescribe('Unregistered user processing', function() {
 	beforeEach(function(){
 //		 var post = {login: "atrubin"};
          executeMySqlQuery("DELETE FROM user WHERE login = 'atrubin'", function(result){

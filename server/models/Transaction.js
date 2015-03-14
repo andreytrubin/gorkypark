@@ -19,6 +19,8 @@ module.exports = function(sequelize, DataTypes){
 				field: "transatcion_status"
 			},
 		}, {
-			tableName: 'transaction'
+			tableName: 'transaction',
+			updatedAt: false,
+			createdAt: false
 		});
 };
