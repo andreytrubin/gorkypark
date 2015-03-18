@@ -35,12 +35,12 @@ var registerInvalid = getContent("registerInvalid.json");
 var registerUrl = "http://localhost:8888/register";
 
 xdescribe('Unregistered user processing', function() {
-	beforeEach(function(){
-//		 var post = {login: "atrubin"};
-         executeMySqlQuery("DELETE FROM user WHERE login = 'atrubin'", function(result){
-         	console.log(result);
-         });
-	});
+//	beforeEach(function(){
+////		 var post = {login: "atrubin"};
+//         executeMySqlQuery("DELETE FROM user WHERE login = 'atrubin'", function(result){
+//         	console.log(result);
+//         });
+//	});
 	
     it('Will proceed with user registration', function(done) {
         request.get(registerUrl, {json:true, body: registerAtrubin}, function(error, response, body) {
