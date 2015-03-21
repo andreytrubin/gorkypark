@@ -38,6 +38,7 @@ function register(response, postData) {
 				// (6) Find role
 				models.Role.find({where : {name : "user"} }).then(function(role) {
 					if (role != null) {
+						console.log(role.dataValues);
 						incomingUser.idRole = role.id;
 						incomingUser.statusBanned = 0;
 						incomingUser.regDate = currentDateToMySqlDate();
