@@ -5,7 +5,7 @@ var urlForExisting = "http://localhost:8888/attractiondetails?id=1";
 var urlForUnExisting = "http://localhost:8888/attractiondetails?id=8";
 var urlWithoutID = "http://localhost:8888/attractiondetails";
 
-describe('Existing attraction processing', function() {
+xdescribe('Existing attraction processing', function() {
     it('Will return existing attraction', function(done) {
     	
     	var result = {id: 1,
@@ -28,7 +28,7 @@ describe('Existing attraction processing', function() {
 });
 });
 
-describe('Unexisting attraction processing', function() {
+xdescribe('Unexisting attraction processing', function() {
     it('Will return 404 Error', function(done) {
     	
     	request.get(urlForUnExisting, {json:true}, function(error, response, body) {
@@ -41,7 +41,7 @@ describe('Unexisting attraction processing', function() {
 });
 });
 
-describe('Missing ID processing', function() {
+xdescribe('Missing ID processing', function() {
     it('Will return 400 Bad Request', function(done) {
     	
     	request.get(urlWithoutID, {json:true}, function(error, response, body) {

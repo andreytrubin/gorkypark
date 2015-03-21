@@ -4,7 +4,7 @@ var fs = require("fs");
 var registerUrl = "http://localhost:8888/attractions";
 
 
-describe('Getting list attractions', function() {
+xdescribe('Getting list attractions', function() {
     it('Will return existing list attractions', function(done) {
     	
     	var result = [ { title: 'Колесо обозрения',

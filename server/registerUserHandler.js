@@ -1,8 +1,10 @@
 var querystring = require("querystring");
 var fs = require("fs");
+var crypto = require("crypto");
+var rand = require('csprng');
+
 var models = require("./models");
 var commons = require("./commons");
-
 
 function register(response, postData) {
 	// (1) check if request is empty return 400
@@ -13,6 +15,7 @@ function register(response, postData) {
 		// if the user already exists get error (return 400 bad request)
 
 		// (2) checking if incoming data is JSON
+		console.log(postData);
 		var incomingJson = commons.getJson(postData, response, commons.badRequest);
 		if (incomingJson == null) {
 			return;
@@ -42,6 +45,11 @@ function register(response, postData) {
 						incomingUser.idRole = role.id;
 						incomingUser.statusBanned = 0;
 						incomingUser.regDate = currentDateToMySqlDate();
+						
+						incomingUser.salt = rand(160, 36);
+						incomingUser.password = crypto.createHash('sha256').update(incomingUser.salt + incomingUser.password).digest("hex");
+						
+						console.log(incomingUser);
 						
 						// (7) Create user that does not exist yet
 						models.User.create(incomingUser).then(function(newUser, errors) {

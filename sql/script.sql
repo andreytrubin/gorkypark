@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS `park`.`User` (
   `idUser` INT NOT NULL AUTO_INCREMENT,
   `idRole` INT NOT NULL,
   `login` VARCHAR(30) NOT NULL,
-  `password` VARCHAR(16) NOT NULL,
+  `password` VARCHAR(256) NOT NULL,
   `first_name` VARCHAR(60) NOT NULL,
   `last_name` VARCHAR(60) NOT NULL,
   `email` VARCHAR(60) NOT NULL,
