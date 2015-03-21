@@ -23,7 +23,7 @@ module.exports = function(sequelize, DataTypes){
 			field: "places"
 		},
 		attPicture: {
-			type: DataTypes.TEXT,
+			type: DataTypes.STRING.BINARY,
 			field: "att_picture"
 		},
 		priceAdult: {

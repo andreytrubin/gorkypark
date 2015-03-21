@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "sequelize": "2.0.3",
-    "mysql": "2.5.5"
+    "mysql": "2.5.5",
+    "csprng" : "0.1.1"
   }
 }

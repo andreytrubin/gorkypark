@@ -48,6 +48,10 @@ module.exports = function(sequelize, DataTypes){
 			type: DataTypes.DATE,
 			field: "dob"
 		},
+		salt: {
+			type: DataTypes.STRING,
+			field: "salt"
+		},
 	}, {
 		tableName: 'user',
 		updatedAt: false,
