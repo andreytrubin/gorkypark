@@ -1,7 +1,7 @@
 var request = require("request");
 var fs = require("fs");
 
-var registerUrl = "http://localhost:8888/attractions";
+var attractionUrl = "https://localhost:8888/attractions";
 
 
 xdescribe('Getting list attractions', function() {

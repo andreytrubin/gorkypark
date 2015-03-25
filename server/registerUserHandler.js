@@ -1,5 +1,3 @@
-var querystring = require("querystring");
-var fs = require("fs");
 var crypto = require("crypto");
 var rand = require('csprng');
 

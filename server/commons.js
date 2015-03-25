@@ -21,6 +21,10 @@ function internalServerError(err, response) {
 	handleError(err, 500, response);
 }
 
+function forbidden(err, response) {
+	handleError(err, 403, response);
+}
+
 function handleError(err, code, response) {
 	console.log("ERROR: " + err);
 	response.writeHead(code, {"Content-Type" : "text/json"});
@@ -33,8 +37,8 @@ function success(response, content){
 	if (content != null){
 		response.write(JSON.stringify(content));
 	}
-	response.end();
-	
+	console.log(content);
+	response.end();	
 }
 
 exports.getJson = getJson;
@@ -42,3 +46,4 @@ exports.badRequest = badRequest;
 exports.notFound = notFound;
 exports.internalServerError = internalServerError;
 exports.success = success;
+exports.forbidden = forbidden;

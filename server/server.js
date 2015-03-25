@@ -1,6 +1,6 @@
-var http = require("http");
+var https = require("https");
 var url = require("url");
-var querystring = require("querystring");
+var fs = require("fs");
 
 // Module function to export
 function start(route, handle) {
@@ -10,14 +10,8 @@ function start(route, handle) {
 		var pathname = url.parse(request.url).pathname;
 		console.log("Request for " + pathname + " received");
 		
-		
-		
-		
-//		query = querystring.parse(pathname);
-//		console.log(query);
-
 		request.setEncoding("utf8");
-
+		
 		// Data listener
 		request.addListener("data", function(postDataChunk) {
 			postData += postDataChunk;
@@ -33,9 +27,16 @@ function start(route, handle) {
 			}
 		});
 	}
+	
+	var hskey = fs.readFileSync('cert/park-key.pem');
+	var hscert = fs.readFileSync('cert/park-cert.pem');
+	var options = {
+		    key: hskey,
+		    cert: hscert
+		};
 
 	// Create server and listen on port 8888 
-	http.createServer(onRequest).listen("8888");
+	https.createServer(options, onRequest).listen("8888");
 	console.log("Server started");
 }
 

@@ -1,4 +1,4 @@
 **/.project
 **/node_modules/*
-../.settings/org.eclipse.core.resources.prefs/*
+**/.settings/*
 
