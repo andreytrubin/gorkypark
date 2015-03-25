@@ -1,9 +1,9 @@
 var request = require("request");
 var fs = require("fs");
 
-var urlForExisting = "http://localhost:8888/attractiondetails?id=1";
-var urlForUnExisting = "http://localhost:8888/attractiondetails?id=8";
-var urlWithoutID = "http://localhost:8888/attractiondetails";
+var urlForExisting = "https://localhost:8888/attractiondetails?id=1";
+var urlForUnExisting = "https://localhost:8888/attractiondetails?id=8";
+var urlWithoutID = "https://localhost:8888/attractiondetails";
 
 xdescribe('Existing attraction processing', function() {
     it('Will return existing attraction', function(done) {

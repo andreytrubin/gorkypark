@@ -31,12 +31,13 @@ function authenticate(response, postData) {
 			console.log(passwordHash);
 			console.log(user.password);
 			if(passwordHash == user.password){
-				commons.success(response, "{}");	
+				commons.success(response, "{}");
+				console.log(response.statusCode);
 			} else {
-				commons.forbidden("User login or passwod not found", response);
+				commons.forbidden("User login or password not found", response);
 			}
 		} else {
-			commons.forbidden("User login or passwod not found", response);
+			commons.forbidden("User login or password not found", response);
 		}
 	});
 	
