@@ -37,8 +37,8 @@ function success(response, content){
 	if (content != null){
 		response.write(JSON.stringify(content));
 	}
-	response.end();
-	
+	console.log(content);
+	response.end();	
 }
 
 exports.getJson = getJson;

@@ -1,6 +1,8 @@
 var url = require("url");
 var crypto = require("crypto");
 var rand = require('csprng');
+var jwt = require('jwt-simple');
+var moment = require("moment");
 
 var models = require("./models");
 var commons = require("./commons");
@@ -10,6 +12,7 @@ function authenticate(response, postData) {
 	
 	if (postData == "") {
 		commons.badRequest("ERROR: no content", response);
+		return;
 	} else {
 		incomingJson = commons.getJson(postData, response, commons.badRequest);
 		if (incomingJson == null) {
@@ -27,12 +30,8 @@ function authenticate(response, postData) {
 		if (user != null) {
 			var password = user.salt + incomingJson.password;
 			var passwordHash = crypto.createHash('sha256').update(password).digest("hex");
-			console.log(user.salt);
-			console.log(passwordHash);
-			console.log(user.password);
 			if(passwordHash == user.password){
-				commons.success(response, "{}");
-				console.log(response.statusCode);
+				generateSecurityToken(response, user);		
 			} else {
 				commons.forbidden("User login or password not found", response);
 			}
@@ -40,7 +39,6 @@ function authenticate(response, postData) {
 			commons.forbidden("User login or password not found", response);
 		}
 	});
-	
 }
 
 function validateData(json) {
@@ -60,6 +58,20 @@ function validateData(json) {
 	return {
 		"errors" : errors
 	};
+}
+
+function generateSecurityToken(response, user) {
+	var expires = moment().add(30, 'minutes').valueOf();
+	var token = jwt.encode({
+	  iss: user.login,
+	  exp: expires
+	}, user.salt);
+
+	commons.success(response, {
+		  token: token,
+		  expires: expires,
+		  user: user.login
+		});		
 }
 
 exports.authenticate = authenticate;

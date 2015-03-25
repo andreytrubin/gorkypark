@@ -17,6 +17,7 @@ var authenticateFailed = getContent("authenticateFailed.json");
 describe('Success user authentification', function() {
     it('Will return 200', function(done) {
     	request.post(authenticateUrl, {json:true, body: authenticateSuccess}, function(error, response, body) {
+    	console.log(response.body);
     	expect(response.statusCode).toEqual(200);
         done();
     });
@@ -42,3 +43,5 @@ xdescribe('User does not exist', function() {
     });
 });
 });
+
+
