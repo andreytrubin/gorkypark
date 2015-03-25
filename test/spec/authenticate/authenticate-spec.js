@@ -1,3 +1,5 @@
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
 var request = require("request");
 var fs = require("fs");
 var SPEC_FILES = "spec/authenticate/";
@@ -15,7 +17,6 @@ var authenticateFailed = getContent("authenticateFailed.json");
 describe('Success user authentification', function() {
     it('Will return 200', function(done) {
     	request.post(authenticateUrl, {json:true, body: authenticateSuccess}, function(error, response, body) {
-    	console.log(response.body);
     	expect(response.statusCode).toEqual(200);
         done();
     });
