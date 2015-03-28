@@ -35,7 +35,8 @@ CREATE TABLE IF NOT EXISTS `park`.`User` (
   `reg_date` DATE NOT NULL,
   `status_banned` TINYINT(1) NOT NULL,
   `dob` DATE NOT NULL,
-  `salt` VARCHAR(45) NOT NULL,
+  `salt` VARCHAR(256) NOT NULL,
+  `last_auth` DATETIME NULL,
   PRIMARY KEY (`idUser`),
   UNIQUE INDEX `login_UNIQUE` (`login` ASC),
   UNIQUE INDEX `email_UNIQUE` (`email` ASC),
@@ -78,7 +79,7 @@ CREATE TABLE IF NOT EXISTS `park`.`Attraction` (
   `description` TEXT NOT NULL,
   `prod_country` VARCHAR(45) NOT NULL,
   `places` INT NOT NULL,
-  `att_picture` BINARY NOT NULL,
+  `att_picture` TEXT NOT NULL,
   `price_adult` INT NOT NULL,
   `price_child` INT NOT NULL,
   PRIMARY KEY (`idAttraction`))
