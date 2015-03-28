@@ -51,10 +51,6 @@ module.exports = function(sequelize, DataTypes){
 		salt: {
 			type: DataTypes.STRING,
 			field: "salt"
-		},
-		lastAuth: {
-			type: DataTypes.DATE,
-			field: "last_auth"
 		}
 	}, {
 		tableName: 'user',

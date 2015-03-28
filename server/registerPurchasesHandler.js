@@ -29,18 +29,19 @@ function validateToken(response, postData) {
 			var time = moment().valueOf();
 			if (time >= incomingJson.expires) {
 				commons.forbidden("Access denied", response);
+				return false;
 			} else {
 				var decoded = jwt.decode(incomingJson.token, user.salt);
 				if (decoded.iss == incomingJson.user && decoded.exp == incomingJson.expires) {
 					commons.success(response, {});
+					return true;
 				}
 			}
 		} else {
 			commons.notFound("No such user in database", recponse);
+			return;
 		}
-	});
-
-	
+	});	
 }	
 
 function validateData(json) {

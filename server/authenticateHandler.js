@@ -33,10 +33,7 @@ function authenticate(response, postData) {
 							password).digest("hex");
 					if (passwordHash == user.password) {
 						generateSecurityToken(response, user);
-//						
-//						user.updateAttributes({
-//							lastAuth : time
-//						});
+
 					} else {
 						commons.forbidden("User login or password not found",
 								response);

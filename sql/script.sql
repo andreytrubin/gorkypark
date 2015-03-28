@@ -36,7 +36,6 @@ CREATE TABLE IF NOT EXISTS `park`.`User` (
   `status_banned` TINYINT(1) NOT NULL,
   `dob` DATE NOT NULL,
   `salt` VARCHAR(256) NOT NULL,
-  `last_auth` DATETIME NULL,
   PRIMARY KEY (`idUser`),
   UNIQUE INDEX `login_UNIQUE` (`login` ASC),
   UNIQUE INDEX `email_UNIQUE` (`email` ASC),
