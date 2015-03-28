@@ -25,18 +25,18 @@ function authenticate(response, postData) {
 		commons.handleError(JSON.stringify(errorsJSON), response);
 		return;
 	}
-	var time = currentDateToMySqlDate();
+//	var time = currentDateToMySqlDate();
 	models.User.find({where : {login : incomingJson.login}}).then(function(user) {
 				if (user != null) {
 					var password = user.salt + incomingJson.password;
 					var passwordHash = crypto.createHash('sha256').update(
 							password).digest("hex");
 					if (passwordHash == user.password) {
-						generateSecurityToken(response, user, time);
-						
-						user.updateAttributes({
-							lastAuth : time
-						});
+						generateSecurityToken(response, user);
+//						
+//						user.updateAttributes({
+//							lastAuth : time
+//						});
 					} else {
 						commons.forbidden("User login or password not found",
 								response);
@@ -67,8 +67,8 @@ function validateData(json) {
 	};
 }
 
-function generateSecurityToken(response, user, time) {
-	var expires = moment(time).add(30, 'minutes').valueOf();
+function generateSecurityToken(response, user) {
+	var expires = moment().add(30, 'minutes').valueOf();
 	console.log(expires);
 	var token = jwt.encode({
 		iss : user.login,
@@ -84,7 +84,5 @@ function generateSecurityToken(response, user, time) {
 
 function currentDateToMySqlDate() {
 	return new Date().toISOString().slice(0, 19).replace('T', ' ');
-	var expires = moment().add(30, 'minutes').valueOf();
-	console.log(expires);
 }
 exports.authenticate = authenticate;

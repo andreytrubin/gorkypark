@@ -31,6 +31,9 @@ function validateToken(response, postData) {
 				commons.forbidden("Access denied", response);
 			} else {
 				var decoded = jwt.decode(incomingJson.token, user.salt);
+				if (decoded.iss == incomingJson.user && decoded.exp == incomingJson.expires) {
+					commons.success(response, {});
+				}
 			}
 		} else {
 			commons.notFound("No such user in database", recponse);
