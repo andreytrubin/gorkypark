@@ -25,7 +25,7 @@ function authenticate(response, postData) {
 		commons.handleError(JSON.stringify(errorsJSON), response);
 		return;
 	}
-//	var time = currentDateToMySqlDate();
+
 	models.User.find({where : {login : incomingJson.login}}).then(function(user) {
 				if (user != null) {
 					var password = user.salt + incomingJson.password;
@@ -79,7 +79,4 @@ function generateSecurityToken(response, user) {
 	});
 }
 
-function currentDateToMySqlDate() {
-	return new Date().toISOString().slice(0, 19).replace('T', ' ');
-}
 exports.authenticate = authenticate;
