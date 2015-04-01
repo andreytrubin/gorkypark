@@ -9,7 +9,7 @@ var commons = require("./commons");
 
 function authenticate(response, postData) {
 	var incomingJson = null;
-	
+
 	if (postData == "") {
 		commons.badRequest("ERROR: no content", response);
 		return;
@@ -19,26 +19,30 @@ function authenticate(response, postData) {
 			return;
 		}
 	}
-	
+
 	var errorsJSON = validateData(incomingJson);
 	if (errorsJSON.errors.length > 0) {
 		commons.handleError(JSON.stringify(errorsJSON), response);
 		return;
 	}
-	
-	models.User.find({where: {login: incomingJson.login}}).then(function(user){
-		if (user != null) {
-			var password = user.salt + incomingJson.password;
-			var passwordHash = crypto.createHash('sha256').update(password).digest("hex");
-			if(passwordHash == user.password){
-				generateSecurityToken(response, user);		
-			} else {
-				commons.forbidden("User login or password not found", response);
-			}
-		} else {
-			commons.forbidden("User login or password not found", response);
-		}
-	});
+
+	models.User.find({where : {login : incomingJson.login}}).then(function(user) {
+				if (user != null) {
+					var password = user.salt + incomingJson.password;
+					var passwordHash = crypto.createHash('sha256').update(
+							password).digest("hex");
+					if (passwordHash == user.password) {
+						generateSecurityToken(response, user);
+
+					} else {
+						commons.forbidden("User login or password not found",
+								response);
+					}
+				} else {
+					commons.forbidden("User login or password not found",
+							response);
+				}
+			});
 }
 
 function validateData(json) {
@@ -54,7 +58,7 @@ function validateData(json) {
 	}
 	if (json.password == null || json.password == "") {
 		errors[errors.length] = "Password must not be empty";
-	}	
+	}
 	return {
 		"errors" : errors
 	};
@@ -62,16 +66,17 @@ function validateData(json) {
 
 function generateSecurityToken(response, user) {
 	var expires = moment().add(30, 'minutes').valueOf();
+	console.log(expires);
 	var token = jwt.encode({
-	  iss: user.login,
-	  exp: expires
+		iss : user.login,
+		exp : expires
 	}, user.salt);
 
 	commons.success(response, {
-		  token: token,
-		  expires: expires,
-		  user: user.login
-		});		
+		token : token,
+		expires : expires,
+		user : user.login
+	});
 }
 
 exports.authenticate = authenticate;

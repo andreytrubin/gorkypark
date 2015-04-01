@@ -43,5 +43,3 @@ xdescribe('User does not exist', function() {
     });
 });
 });
-
-

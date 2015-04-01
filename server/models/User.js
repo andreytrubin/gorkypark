@@ -51,7 +51,7 @@ module.exports = function(sequelize, DataTypes){
 		salt: {
 			type: DataTypes.STRING,
 			field: "salt"
-		},
+		}
 	}, {
 		tableName: 'user',
 		updatedAt: false,
