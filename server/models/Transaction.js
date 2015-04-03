@@ -6,6 +6,11 @@ module.exports = function(sequelize, DataTypes){
 				primaryKey: true,
 				autoIncremet: true
 			},
+			idUser: {
+				type: DataTypes.INTEGER,
+				field: "idRole",
+				foreignKey: true,
+			},
 			transactionDate: {
 				type: DataTypes.DATE,
 				field: "transaction_date"
@@ -18,8 +23,12 @@ module.exports = function(sequelize, DataTypes){
 				type: DataTypes.STRING,
 				field: "transatcion_status"
 			},
+			ticketCount: {
+				type: DataTypes.INTEGER,
+				field: "ticket_count"
+			}
 		}, {
-			tableName: 'transaction',
+			tableName: 'Transaction',
 			updatedAt: false,
 			createdAt: false
 		});

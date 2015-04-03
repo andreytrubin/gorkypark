@@ -17,9 +17,9 @@ module.exports = function(sequelize, DataTypes){
 		validDate: {
 			type: DataTypes.DATE,
 			field: "valid_date"
-		},
+		}
 	}, {
-		tableName: 'ticket',
+		tableName: 'Ticket',
 		updatedAt: false,
 		createdAt: false
 	});

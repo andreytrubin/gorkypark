@@ -18,7 +18,9 @@ var models = [
      "Attraction",
      "Ticket",
      "Transaction",
-     "Role"
+     "Role",
+     "Cart",
+     "CartItem"
 ];
 
 // Models registration
@@ -28,10 +30,13 @@ models.forEach(function(model) {
 
 // Model relatipships registration
 (function(m) {
-	  m.User.hasMany(m.Transaction, {foreignKey: "idTransaction", constraints: false});
-	  m.Transaction.hasMany(m.Ticket, {foreignKey: "idTicket", constraints: false});
-	  m.Attraction.hasMany(m.Ticket, {foreignKey: "idTicket", constraints: false});
+	  m.User.hasMany(m.Transaction, {foreignKey: "idUser", constraints: false});
+	  m.User.hasOne(m.Cart, {foreignKey: "idUser", constraints: false});
+	  m.Transaction.hasMany(m.Ticket, {foreignKey: "idTransaction", constraints: false});
+	  m.Attraction.hasMany(m.Ticket, {foreignKey: "idAttraction", constraints: false});
+	  m.Attraction.hasOne(m.CartItem, {foreignKey: "idAttraction", constraints: false});
 	  m.Role.hasMany(m.User, {foreignKey:"idRole", constraints: false });
+	  m.Cart.hasMany(m.CartItem, {foreignKey:"idCart", constraints: false });
 }) (module.exports);
 
 // export connection
