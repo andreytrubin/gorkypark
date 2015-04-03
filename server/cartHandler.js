@@ -19,17 +19,11 @@ function addToCart(response, postData){
 			} else {
 				models.Cart.findOrCreate({where: {idUser: user.id}, defaults: {idUser: user.id}}).spread(function(cart, created){
 					
-					var cartItem = incomingJson;
-					cartItem.idCart = cart.id;
-					cartItem.adult_quant = 2;
-					cartItem.child_quant = 2;
-					console.log(cartItem);
-					models.CartItem.create(cartItem).then(function(newItem, errors){
+					incomingJson.idCart = cart.id;
+					models.CartItem.create(incomingJson).then(function(newItem){
 						if (newItem != null) {
-							
 							console.log("INFO: New cartItem created");
-							response.writeHead(200);
-							response.end();
+							commons.success(response, "{}");
 						}
 					});
 				});
