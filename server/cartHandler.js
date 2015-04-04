@@ -3,11 +3,15 @@ var commons = require("./commons");
 var validator = require("./tokenValidator");
 var sequelize = require("sequelize");
 
-function addToCart(response, postData){
+function addToCart(response, postData, authToken) {
 	if (postData == "") {
 		commons.badRequest("ERROR: no content", response);
 	} else {
 		console.log(postData);
+		
+		if (!validator.validateToken(response, authToken)) {
+			return;
+		}
 		
 		// FIXME: rename incomingJson to cartJson in order to be clear on names of variables.
 		var incomingJson = commons.getJson(postData, response, commons.badRequest);
