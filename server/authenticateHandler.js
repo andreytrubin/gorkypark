@@ -3,7 +3,6 @@ var crypto = require("crypto");
 var rand = require('csprng');
 var jwt = require('jwt-simple');
 var moment = require("moment");
-var jsonminify = require("jsonminify");
 
 var models = require("./models");
 var commons = require("./commons");
@@ -28,22 +27,18 @@ function authenticate(response, postData) {
 	}
 
 	models.User.find({where : {login : incomingJson.login}}).then(function(user) {
-				if (user != null) {
-					var password = user.salt + incomingJson.password;
-					var passwordHash = crypto.createHash('sha256').update(
-							password).digest("hex");
-					if (passwordHash == user.password) {
-						generateSecurityToken(response, user);
-
-					} else {
-						commons.forbidden("User login or password not found",
-								response);
-					}
-				} else {
-					commons.forbidden("User login or password not found",
-							response);
-				}
-			});
+		if (user != null) {
+			var password = user.salt + incomingJson.password;
+			var passwordHash = crypto.createHash('sha256').update(password).digest("hex");
+			if (passwordHash == user.password) {
+				generateSecurityToken(response, user);
+			} else {
+				commons.forbidden("User login or password not found", response);
+			}
+		} else {
+			commons.forbidden("User login or password not found", response);
+		}
+	});
 }
 
 function validateData(json) {
