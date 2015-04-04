@@ -17,8 +17,17 @@ var authenticateFailed = getContent("authenticateFailed.json");
 describe('Success user authentification', function() {
     it('Will return 200', function(done) {
     	request.post(authenticateUrl, {json:true, body: authenticateSuccess}, function(error, response, body) {
-    	console.log(response.body);
+    	var header = response.headers["authorization"];
+    	var str = "Bearer ";
+    	var bearerString = header.substr(0, 7);    	
+    	var objectString = header.slice(7);
+    	var obj = JSON.parse(objectString);
+    	
     	expect(response.statusCode).toEqual(200);
+    	expect(str).toEqual(bearerString);
+    	expect(obj.token).not.toBe(undefined);
+    	expect(obj.expires).not.toBe(undefined);
+    	expect(obj.user).toEqual("ayasenov");
         done();
     });
 });

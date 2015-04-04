@@ -3,6 +3,7 @@ var crypto = require("crypto");
 var rand = require('csprng');
 var jwt = require('jwt-simple');
 var moment = require("moment");
+var jsonminify = require("jsonminify");
 
 var models = require("./models");
 var commons = require("./commons");
@@ -71,12 +72,13 @@ function generateSecurityToken(response, user) {
 		iss : user.login,
 		exp : expires
 	}, user.salt);
-
-	commons.success(response, {
-		token : token,
-		expires : expires,
-		user : user.login
-	});
+	
+	var securityToken = {"token": token, "expires": expires, "user": user.login};
+	var stringifiedToken = "Bearer " + JSON.stringify(securityToken);
+	console.log(stringifiedToken);
+	
+	response.writeHead(200, {"Content-Type" : "text/json", "Authorization" : stringifiedToken});
+	response.end();	
 }
 
 exports.authenticate = authenticate;
