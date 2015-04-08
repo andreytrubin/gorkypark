@@ -1,6 +1,16 @@
 {
-	"login": "ayasenov",
-	"idAttraction": 4,
-	"adultQuant": 2,
-	"childQuant": 0
+	"items":[
+	    {
+			"idAttraction": 4,
+			"adultQuant": 1,
+			"childQuant": 4,
+			"status": "delete"
+	    },
+		{
+			"idAttraction": 3,
+			"adultQuant": 8,
+			"childQuant": 8,
+			"status": "delete"
+		}
+	]
 }

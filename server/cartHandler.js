@@ -13,28 +13,58 @@ function addToCart(response, postData, authToken) {
 			return;
 		}
 		
-		// FIXME: rename incomingJson to cartJson in order to be clear on names of variables.
-		var incomingJson = commons.getJson(postData, response, commons.badRequest);
-		if (incomingJson == null) {
-			// TODO: properly handle error here.
+		var cartJson = commons.getJson(postData, response, commons.badRequest);
+		if (cartJson == null) {
+			commons.internalServerError("ERROR: File is empty", response);
 			return;
 		}
-
-		models.User.find({where: {login: incomingJson.login}}).then(function(user) {
+		
+		//Getting user login from authorization token
+		var objectString = authToken.slice(7);
+		var securityToken = JSON.parse(objectString);
+		
+		//Searching such user in database
+		models.User.find({where: {login: securityToken.user}}).then(function(user) {
 			if(user == null) {
 				commons.notFound("User not found", response);
 				return;
 			} else {
+				//If user is defined, trying to find user's cart if it exists or create new one
 				models.Cart.findOrCreate({where: {idUser: user.id}, defaults: {idUser: user.id}}).spread(function(cart, created) {
-					// FIXME: DON'T ever modify the incoming data. Create a new object and work with it. Copy incoming data if required.
-					incomingJson.idCart = cart.id;
-					models.CartItem.create(incomingJson).then(function(newItem) {
-						if (newItem != null) {
-							console.log("INFO: New cartItem created");
-							commons.success(response, "{}");
+					var cartItem = [];
+					cartItem = cartJson.items;
+					cartItem.idCart = cart.id;
+					for (var i = 0; i < cartItem.length; i++) {
+						cartItem[i].idCart = cart.id;
+						
+						if(cartItem[i].status == "add") {
+							//For all items in incoming Json creating new item in Cart_Item table
+							models.CartItem.create(cartItem[i]).then(function(newItem) {
+								if (newItem != null) {
+									console.log("INFO: New cartItem created");
+								}
+							});
 						}
-					});
-				});
+						
+						if(cartItem[i].status == "update") {
+							models.CartItem.find({where: {idAttraction: cartItem[i].idAttraction}}, cartItem[i]).then(function(item) {
+								if (item != null) {
+									item.updateAttributes({
+										adultQuant: cartItem[i].adultQuant,
+										childQuant: cartItem[i].childQuant
+									});
+								} else {
+									console.log("ITEM IS NOT FIND");
+								}	
+							});
+						}
+						
+						if (cartItem[i].status == "delete") {
+							models.CartItem.destroy({where: {idAttraction: cartItem[i].idAttraction}});
+						}
+					}
+					commons.success(response, "{}");
+				});		
 			}	
 		});
 	}
