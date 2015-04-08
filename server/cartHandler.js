@@ -47,6 +47,7 @@ function addToCart(response, postData, authToken) {
 						}
 						
 						if(cartItem[i].status == "update") {
+							//For all items in incoming Json updating values
 							models.CartItem.find({where: {idAttraction: cartItem[i].idAttraction}}, cartItem[i]).then(function(item) {
 								if (item != null) {
 									item.updateAttributes({
@@ -60,6 +61,7 @@ function addToCart(response, postData, authToken) {
 						}
 						
 						if (cartItem[i].status == "delete") {
+							//For all items in incoming Json deleting rows
 							models.CartItem.destroy({where: {idAttraction: cartItem[i].idAttraction}});
 						}
 					}
