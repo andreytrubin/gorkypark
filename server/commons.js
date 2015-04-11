@@ -32,13 +32,19 @@ function handleError(err, code, response) {
 	response.end();
 }
 
-function success(response, content){
+function success(response, content) {
 	response.writeHead(200, {"Content-Type" : "text/json"});
 	if (content != null){
 		response.write(JSON.stringify(content));
 	}
 	console.log(content);
 	response.end();	
+}
+
+function getToken(token, incomeString) {
+	var objectString = authToken.slice(incomeString.length);
+	var securityToken = JSON.parse(objectString);
+	return securityToken;
 }
 
 exports.getJson = getJson;

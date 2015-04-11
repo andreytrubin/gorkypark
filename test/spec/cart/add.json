@@ -2,15 +2,15 @@
 	"items":[
 	    {
 			"idAttraction": 4,
-			"adultQuant": 1,
-			"childQuant": 4,
-			"status": "delete"
+			"adultQuant": 2,
+			"childQuant": 2,
+			"status": "update"
 	    },
 		{
 			"idAttraction": 3,
-			"adultQuant": 8,
-			"childQuant": 8,
-			"status": "delete"
+			"adultQuant": 4,
+			"childQuant": 4,
+			"status": "update"
 		}
 	]
 }
