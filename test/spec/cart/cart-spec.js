@@ -16,9 +16,8 @@ function readHeader(path){
 var addItem = getContent("add.json");
 var updateItem = getContent("update.json");
 
-describe('Adding items to CartItemTable', function() {
+xdescribe('Adding items to CartItemTable', function() {
     it('Will return 200', function(done) {
-//    	var headers = {"Authorization":"Bearer {\"token\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJheWFzZW5vdiIsImV4cCI6MTQyOTAwNTI0NjMzNX0.X3fx91lN8gZBahlwF4w3C5WO7Wf1UmLM4T6BYSBiN-g\",\"expires\":1429005246335,\"user\":\"ayasenov\"}"};
     	var headers = {};
     	headers.Authorization = readHeader("token.json");
     	console.log(headers);

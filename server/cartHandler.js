@@ -55,6 +55,7 @@ function cartManagement(response, postData, authToken) {
 						var item = cartItem[i];
 						item.idCart = cart.id;
 						
+						
 						if (item.status == undefined || item.status == null) {
 							commons.badRequest("NO STATUS", response);
 							return;
