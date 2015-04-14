@@ -1,16 +1,16 @@
 {
-	"items":[
+	"items": [
 	    {
 			"idAttraction": 4,
 			"adultQuant": 2,
 			"childQuant": 2,
-			"status": "update"
+			"status": "add"
 	    },
 		{
 			"idAttraction": 3,
 			"adultQuant": 4,
 			"childQuant": 4,
-			"status": "update"
+			"status": "add"
 		}
 	]
 }

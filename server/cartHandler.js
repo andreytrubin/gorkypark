@@ -35,34 +35,40 @@ function cartManagement(response, postData, authToken) {
 					cartItem.idCart = cart.id;
 					
 					//Dividing items by status
-					var itemsToAdd = [];
-					var itemsToUpdate = [];
-					var itemsToDelete = [];
-					for ( var i = 0; i < cartItem.length; i++) {
-						var item = cartItem[i];
-						if (item.status == "add") {
-							itemsToAdd[length] = item;
-						}
-						if (item.status == "update") {
-							itemsToUpdate[length] = item;
-						}
-						if (item.status == "delete") {
-							itemsToDelete[length] = item;
-						}
-					}
+//					var itemsToAdd = [];
+//					var itemsToUpdate = [];
+//					var itemsToDelete = [];
+//					for ( var i = 0; i < cartItem.length; i++) {
+//						var item = cartItem[i];
+//						if (item.status == "add") {
+//							itemsToAdd[length] = item;
+//						}
+//						if (item.status == "update") {
+//							itemsToUpdate[length] = item;
+//						}
+//						if (item.status == "delete") {
+//							itemsToDelete[length] = item;
+//						}
+//					}
 
 					for (var i = 0; i < cartItem.length; i++) {
 						var item = cartItem[i];
 						item.idCart = cart.id;
 						
-						if (item == undefined || item == null) {
+						if (item.status == undefined || item.status == null) {
 							commons.badRequest("NO STATUS", response);
 							return;
 						}
 						
 						if(item.status == "add") {
 							//For all items in incoming Json creating new item in Cart_Item table
-							addItem(item);
+							try {
+								addItem(item);
+							} catch (SequelizeUniqueConstraintError) {
+								console.log(e.name);
+								console.log(e.message);
+								console.log(e.trace); 
+							}
 						}
 						
 						console.log(item);
@@ -101,7 +107,7 @@ function updateItem(item){
 				childQuant: item.childQuant
 			});
 		} else {
-			console.log("ITEM NOT FIND");
+			console.log("ITEM NOT FOUND");
 		}	
 	});
 }

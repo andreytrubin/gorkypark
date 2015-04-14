@@ -42,7 +42,7 @@ function success(response, content) {
 }
 
 function getToken(token, incomeString) {
-	var objectString = authToken.slice(incomeString.length);
+	var objectString = token.slice(incomeString.length);
 	var securityToken = JSON.parse(objectString);
 	return securityToken;
 }
@@ -53,3 +53,4 @@ exports.notFound = notFound;
 exports.internalServerError = internalServerError;
 exports.success = success;
 exports.forbidden = forbidden;
+exports.getToken = getToken;
