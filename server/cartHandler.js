@@ -2,6 +2,7 @@ var models = require("./models");
 var commons = require("./commons");
 var validator = require("./tokenValidator");
 var sequelize = require("sequelize");
+var async = require("async");
 
 function cartManagement(response, postData, authToken) {
 	if (postData == "") {
@@ -35,55 +36,28 @@ function cartManagement(response, postData, authToken) {
 					cartItem.idCart = cart.id;
 					
 					//Dividing items by status
-//					var itemsToAdd = [];
-//					var itemsToUpdate = [];
-//					var itemsToDelete = [];
-//					for ( var i = 0; i < cartItem.length; i++) {
-//						var item = cartItem[i];
-//						if (item.status == "add") {
-//							itemsToAdd[length] = item;
-//						}
-//						if (item.status == "update") {
-//							itemsToUpdate[length] = item;
-//						}
-//						if (item.status == "delete") {
-//							itemsToDelete[length] = item;
-//						}
-//					}
-
-					for (var i = 0; i < cartItem.length; i++) {
+					var itemsToAdd = [];
+					var itemsToUpdate = [];
+					var itemsToDelete = [];
+					for ( var i = 0; i < cartItem.length; i++) {
 						var item = cartItem[i];
-						item.idCart = cart.id;
-						
-						
-						if (item.status == undefined || item.status == null) {
-							commons.badRequest("NO STATUS", response);
-							return;
+						if (item.status == "add") {
+							itemsToAdd[itemsToAdd.length] = item;
 						}
-						
-						if(item.status == "add") {
-							//For all items in incoming Json creating new item in Cart_Item table
-							try {
-								addItem(item);
-							} catch (SequelizeUniqueConstraintError) {
-								console.log(e.name);
-								console.log(e.message);
-								console.log(e.trace); 
-							}
+						if (item.status == "update") {
+							itemsToUpdate[itemsToUpdate.length] = item;
 						}
-						
-						console.log(item);
-						if(item.status == "update") {
-							//For all items in incoming Json updating values
-							updateItem(item);
-						}
-						
 						if (item.status == "delete") {
-							//For all items in incoming Json deleting rows
-							deleteItem(item);
+							itemsToDelete[itemsToDelete.length] = item;
 						}
-					console.log("ITERATION COMPLETE");
 					}
+					async.waterfall([
+					             addItem(itemsToAdd), 
+					             updateItem(itemsToUpdate), 
+					             deleteItem(itemsToDelete)], 
+					             function(err) {
+									console.log(err);
+								 });
 					commons.success(response, "{}");
 				});		
 			}	
@@ -91,30 +65,40 @@ function cartManagement(response, postData, authToken) {
 	}
 }
 
-function addItem(item){
-	models.CartItem.create(item).then(function(newItem) {
-		if (newItem != null) {
-			console.log("INFO: New cartItem created");
-		}
-	});
+function addItem(itemsToAdd){
+	
+	for ( var i = 0; i < itemsToAdd.length; i++) {
+		var item = itemsToAdd[i];
+		models.CartItem.create(item).then(function(newItem) {
+			if (newItem != null) {
+				console.log("INFO: New cartItem created");
+			}
+		});
+	}
 }
 
-function updateItem(item){
-	models.CartItem.find({where: {idAttraction: item.idAttraction}}).then(function(newItem, item) {
-		console.log(item);
-		if (newItem != null) {
-			newItem.updateAttributes({
-				adultQuant: item.adultQuant,
-				childQuant: item.childQuant
-			});
-		} else {
-			console.log("ITEM NOT FOUND");
-		}	
-	});
+function updateItem(itemsToUpdate){
+	for ( var i = 0; i < itemsToUpdate.length; i++) {
+		var item = itemsToUpdate[i];
+		models.CartItem.find({where: {idAttraction: item.idAttraction}}).then(function(newItem, item) {
+			console.log(item);
+			if (newItem != null) {
+				newItem.updateAttributes({
+					adultQuant: item.adultQuant,
+					childQuant: item.childQuant
+				});
+			} else {
+				console.log("ITEM NOT FOUND");
+			}	
+		});
+	}
 }
 
-function deleteItem(item){
-	models.CartItem.destroy({where: {idAttraction: item.idAttraction}});
+function deleteItem(itemsToDelete){
+	for ( var i = 0; i < itemsToDelete.length; i++) {
+		var item = itemsToDelete[i];
+		models.CartItem.destroy({where: {idAttraction: item.idAttraction}});
+	}
 }
 
 exports.cartManagement = cartManagement;

@@ -14,7 +14,7 @@ var authenticateSuccess = getContent("authenticateSuccess.json");
 var unregisteredUser = getContent("unregisteredUser.json");
 var authenticateFailed = getContent("authenticateFailed.json");
 
-describe('Success user authentification', function() {
+xdescribe('Success user authentification', function() {
     it('Will return 200', function(done) {
     	request.post(authenticateUrl, {json:true, body: authenticateSuccess}, function(error, response, body) {
     	var header = response.headers["authorization"];

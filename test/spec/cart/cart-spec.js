@@ -16,7 +16,7 @@ function readHeader(path){
 var addItem = getContent("add.json");
 var updateItem = getContent("update.json");
 
-xdescribe('Adding items to CartItemTable', function() {
+describe('Adding items to CartItem table', function() {
     it('Will return 200', function(done) {
     	var headers = {};
     	headers.Authorization = readHeader("token.json");
