@@ -4,7 +4,7 @@ module.exports = function(sequelize, DataTypes){
 				type: DataTypes.INTEGER,
 				field: "idTransaction",
 				primaryKey: true,
-				autoIncremet: true
+				autoIncrement: true
 			},
 			idUser: {
 				type: DataTypes.INTEGER,

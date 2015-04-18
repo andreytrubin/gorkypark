@@ -24,7 +24,7 @@ function cartManagement(response, postData, authToken) {
 				return;
 			} else {
 				//If user is defined, trying to find user's cart if it exists or create new one
-				models.Cart.findOrCreate({where: {idUser: user.id}, defaults: {idUser: user.id}}).spread(function(cart, created) {
+				models.Cart.findOrCreate({where: {idUser: user.id}, defaults: {idUser: user.id}}).spread(function(cart) {
 					var cartJson = commons.getJson(postData, response, commons.badRequest);
 					if (cartJson == null) {
 						commons.internalServerError("ERROR: File is empty", response);
@@ -60,8 +60,11 @@ function cartManagement(response, postData, authToken) {
 					});
 					
 					commons.success(response, "{}");
+				}).catch(function(err) {
+					console.log(err);
+					console.log(err.stack);
 				});
-			}	
+			}
 		});
 	}
 }

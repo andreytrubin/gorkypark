@@ -4,7 +4,7 @@ module.exports = function(sequelize, DataTypes){
 			type: DataTypes.INTEGER,
 			field: "idCart_Item",
 			primaryKey: true,
-			autoIncremet: true
+			autoIncrement: true
 		},
 		idCart: {
 			type: DataTypes.INTEGER,

@@ -2,14 +2,14 @@
 	"items":[
 	    {
 			"idAttraction": 4,
-			"adultQuant": 2,
-			"childQuant": 2,
+			"adultQuant": 3,
+			"childQuant": 3,
 			"status": "update"
 	    },
 		{
 			"idAttraction": 3,
-			"adultQuant": 1,
-			"childQuant": 1,
+			"adultQuant": 2,
+			"childQuant": 2,
 			"status": "update"
 		}
 	]

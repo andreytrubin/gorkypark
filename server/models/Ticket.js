@@ -4,7 +4,7 @@ module.exports = function(sequelize, DataTypes){
 			type: DataTypes.INTEGER,
 			field: "idTicket",
 			primaryKey: true,
-			autoIncremet: true
+			autoIncrement: true
 		},
 		price: {
 			type: DataTypes.INTEGER,
