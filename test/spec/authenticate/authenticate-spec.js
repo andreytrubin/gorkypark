@@ -1,5 +1,4 @@
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
-
+var commons = require("../commons/testHelper.js");
 var request = require("request");
 var fs = require("fs");
 var SPEC_FILES = "spec/authenticate/";
@@ -14,7 +13,7 @@ var authenticateSuccess = getContent("authenticateSuccess.json");
 var unregisteredUser = getContent("unregisteredUser.json");
 var authenticateFailed = getContent("authenticateFailed.json");
 
-xdescribe('Success user authentification', function() {
+describe('Success user authentification', function() {
     it('Will return 200', function(done) {
     	request.post(authenticateUrl, {json:true, body: authenticateSuccess}, function(error, response, body) {
     	var header = response.headers["authorization"];

@@ -24,7 +24,6 @@ function cartManagement(response, postData, authToken) {
 				return;
 			} else {
 				//If user is defined, trying to find user's cart if it exists or create new one
-				
 				models.Cart.findOrCreate({where: {idUser: user.id}, defaults: {idUser: user.id}}).spread(function(cart, created) {
 					var cartJson = commons.getJson(postData, response, commons.badRequest);
 					if (cartJson == null) {
@@ -59,14 +58,16 @@ function cartManagement(response, postData, authToken) {
 									console.log(err);
 								 });
 					commons.success(response, "{}");
-				});		
+				}).catch(function(err) {
+					console.log('Error occured', err);
+				});
 			}	
 		});
 	}
 }
 
 function addItem(itemsToAdd){
-	
+	Console.log("Adding items");
 	for ( var i = 0; i < itemsToAdd.length; i++) {
 		var item = itemsToAdd[i];
 		models.CartItem.create(item).then(function(newItem) {
@@ -78,6 +79,7 @@ function addItem(itemsToAdd){
 }
 
 function updateItem(itemsToUpdate){
+	Console.log("Updating items");
 	for ( var i = 0; i < itemsToUpdate.length; i++) {
 		var item = itemsToUpdate[i];
 		models.CartItem.find({where: {idAttraction: item.idAttraction}}).then(function(newItem, item) {
@@ -95,6 +97,7 @@ function updateItem(itemsToUpdate){
 }
 
 function deleteItem(itemsToDelete){
+	Console.log("Deleting items");
 	for ( var i = 0; i < itemsToDelete.length; i++) {
 		var item = itemsToDelete[i];
 		models.CartItem.destroy({where: {idAttraction: item.idAttraction}});

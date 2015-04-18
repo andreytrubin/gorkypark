@@ -31,7 +31,7 @@ models.forEach(function(model) {
 // Model relatipships registration
 (function(m) {
 	  m.User.hasMany(m.Transaction, {foreignKey: "idUser", constraints: false});
-	  m.User.hasOne(m.Cart, {foreignKey: "idUser", constraints: false});
+	  m.User.hasMany(m.Cart, {foreignKey: "idUser", constraints: true});
 	  m.Transaction.hasMany(m.Ticket, {foreignKey: "idTransaction", constraints: false});
 	  m.Attraction.hasMany(m.Ticket, {foreignKey: "idAttraction", constraints: false});
 	  m.Attraction.hasOne(m.CartItem, {foreignKey: "idAttraction", constraints: false});

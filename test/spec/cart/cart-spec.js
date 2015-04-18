@@ -1,3 +1,4 @@
+var commons = require("../commons/testHelper.js");
 var request = require("request");
 var fs = require("fs");
 var SPEC_FILES = "spec/cart/";
@@ -8,7 +9,7 @@ function getContent(path) {
 	return result;
 }
 
-function readHeader(path){
+function readHeader(path) {
 	var header = fs.readFileSync(SPEC_FILES + path, "utf-8");
 	return header;
 }
@@ -20,11 +21,11 @@ describe('Adding items to CartItem table', function() {
     it('Will return 200', function(done) {
     	var headers = {};
     	headers.Authorization = readHeader("token.json");
-    	console.log(headers);
+    	console.log(addItem);
     	request.post(cartUrl, {headers: headers, json:true, body: addItem}, function(error, response, body) {
-
-    	expect(response.statusCode).toEqual(200);
-        done();
+    		console.log(error);
+    		expect(response.statusCode).toEqual(200);
+    		done();
+    	});
     });
-});
 });
