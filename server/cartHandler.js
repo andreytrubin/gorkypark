@@ -51,17 +51,14 @@ function cartManagement(response, postData, authToken) {
 						}
 					}
 					//foreach for adding items
-//					async.eachSeries(itemsToAdd, addItem(itemsToAdd), function(err){
-//						console.log(err);
-//					});
+					async.each(itemsToAdd, addItem, function(err) {
+						console.log(err);
+					});
 					//foreach for adding items
-					try {
-						async.eachSeries(itemsToUpdate, updateItem(itemsToUpdate), function(err) {
-							console.log(err);
-						});
-					} catch (e) {
-						console.log("*****************" + e);
-					}
+					async.each(itemsToUpdate, updateItem, function (err) {
+						console.log(err);
+					});
+					
 					commons.success(response, "{}");
 				});
 			}	
@@ -69,36 +66,30 @@ function cartManagement(response, postData, authToken) {
 	}
 }
 
-function addItem(itemsToAdd){
-	console.log("Adding items");
-	for (var i = 0; i < itemsToAdd.length; i++) {
-		var item = itemsToAdd[i];
-		models.CartItem.create(item).then(function(newItem) {
-			if (newItem != null) {
-				console.log("INFO: New cartItem created");
-			}
-		});
-	}
+function addItem(item, callback) {
+	models.CartItem.create(item).then(function(newItem) {
+		if (newItem != null) {
+			console.log("INFO: New cartItem created");
+		}
+	}).catch(function(err) {
+		console.log(err);
+	});
 }
 
-function updateItem(itemsToUpdate){
-	console.log("Updating items");
-	for ( var i = 0; i < itemsToUpdate.length; i++) {
-		var item = itemsToUpdate[i];
-		(function(item){
-			models.CartItem.find({where: {idAttraction: item.idAttraction}}).then(function(newItem) {
-				console.log(item);
-				if (newItem != null) {
-					newItem.updateAttributes({
-						adultQuant: item.adultQuant,
-						childQuant: item.childQuant
-					});
-				} else {
-					console.log("ITEM NOT FOUND");
-				}	
+function updateItem(item, callback) {
+	console.log("Updating item " + item);
+	models.CartItem.find({where: {idAttraction: item.idAttraction}}).then(function(newItem) {
+		if (newItem != null) {
+			newItem.updateAttributes({
+				adultQuant: item.adultQuant,
+				childQuant: item.childQuant
 			});
-		})(item);
-	}
+		} else {
+			console.log("ITEM NOT FOUND");
+		}	
+	}).catch(function(err) {
+		console.log(err);
+	});
 }
 
 function deleteItem(itemsToDelete){
