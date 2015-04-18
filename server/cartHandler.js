@@ -32,7 +32,6 @@ function cartManagement(response, postData, authToken) {
 					}
 					var cartItem = [];
 					cartItem = cartJson.items;
-					cartItem.idCart = cart.id;
 					
 					//Dividing items by status
 					var itemsToAdd = [];
@@ -40,6 +39,7 @@ function cartManagement(response, postData, authToken) {
 					var itemsToDelete = [];
 					for ( var i = 0; i < cartItem.length; i++) {
 						var item = cartItem[i];
+						item.idCart = cart.id;
 						if (item.status == "add") {
 							itemsToAdd[itemsToAdd.length] = item;
 						}
@@ -50,16 +50,19 @@ function cartManagement(response, postData, authToken) {
 							itemsToDelete[itemsToDelete.length] = item;
 						}
 					}
-					async.waterfall([
-					             addItem(itemsToAdd), 
-					             updateItem(itemsToUpdate), 
-					             deleteItem(itemsToDelete)], 
-					             function(err) {
-									console.log(err);
-								 });
+					//foreach for adding items
+//					async.eachSeries(itemsToAdd, addItem(itemsToAdd), function(err){
+//						console.log(err);
+//					});
+					//foreach for adding items
+					try {
+						async.eachSeries(itemsToUpdate, updateItem(itemsToUpdate), function(err) {
+							console.log(err);
+						});
+					} catch (e) {
+						console.log("*****************" + e);
+					}
 					commons.success(response, "{}");
-				}).catch(function(err) {
-					console.log('Error occured', err);
 				});
 			}	
 		});
@@ -67,8 +70,8 @@ function cartManagement(response, postData, authToken) {
 }
 
 function addItem(itemsToAdd){
-	Console.log("Adding items");
-	for ( var i = 0; i < itemsToAdd.length; i++) {
+	console.log("Adding items");
+	for (var i = 0; i < itemsToAdd.length; i++) {
 		var item = itemsToAdd[i];
 		models.CartItem.create(item).then(function(newItem) {
 			if (newItem != null) {
@@ -79,25 +82,27 @@ function addItem(itemsToAdd){
 }
 
 function updateItem(itemsToUpdate){
-	Console.log("Updating items");
+	console.log("Updating items");
 	for ( var i = 0; i < itemsToUpdate.length; i++) {
 		var item = itemsToUpdate[i];
-		models.CartItem.find({where: {idAttraction: item.idAttraction}}).then(function(newItem, item) {
-			console.log(item);
-			if (newItem != null) {
-				newItem.updateAttributes({
-					adultQuant: item.adultQuant,
-					childQuant: item.childQuant
-				});
-			} else {
-				console.log("ITEM NOT FOUND");
-			}	
-		});
+		(function(item){
+			models.CartItem.find({where: {idAttraction: item.idAttraction}}).then(function(newItem) {
+				console.log(item);
+				if (newItem != null) {
+					newItem.updateAttributes({
+						adultQuant: item.adultQuant,
+						childQuant: item.childQuant
+					});
+				} else {
+					console.log("ITEM NOT FOUND");
+				}	
+			});
+		})(item);
 	}
 }
 
 function deleteItem(itemsToDelete){
-	Console.log("Deleting items");
+	console.log("Deleting items");
 	for ( var i = 0; i < itemsToDelete.length; i++) {
 		var item = itemsToDelete[i];
 		models.CartItem.destroy({where: {idAttraction: item.idAttraction}});
