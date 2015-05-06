@@ -53,7 +53,7 @@ module.exports = function(sequelize, DataTypes){
 			field: "salt"
 		}
 	}, {
-		tableName: 'user',
+		tableName: 'User',
 		updatedAt: false,
 		createdAt: false
 	});

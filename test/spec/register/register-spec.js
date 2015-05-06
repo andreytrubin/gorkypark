@@ -1,3 +1,4 @@
+var commons = require("../commons/testHelper.js");
 var request = require("request");
 var fs = require("fs");
 var mysql = require("mysql");

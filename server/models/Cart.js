@@ -1,18 +1,20 @@
 module.exports = function(sequelize, DataTypes){
-	return sequelize.define("role", {
+	return sequelize.define("cart", {
 		id: {
 			type: DataTypes.INTEGER,
-			field: "idRole",
+			field: "idCart",
 			primaryKey: true,
 			autoIncrement: true
 		},
-		name: {
-			type: DataTypes.STRING,
-			field: "name"
+		idUser: {
+			type: DataTypes.INTEGER,
+			field: "idUser",
+			foreignKey: true
 		}
 	}, {
-		tableName: 'Role',
+		tableName: 'Cart',
 		updatedAt: false,
 		createdAt: false
 	});
 };
+	

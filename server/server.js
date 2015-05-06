@@ -20,10 +20,11 @@ function start(route, handle) {
 
 		// End listener
 		request.addListener("end", function() {
+			var authToken = request.headers["authorization"];
 			if (request.method == "GET") {
 				route(handle, pathname, response, request);
 			} else {
-				route(handle, pathname, response, postData);
+				route(handle, pathname, response, postData, authToken);
 			}
 		});
 	}

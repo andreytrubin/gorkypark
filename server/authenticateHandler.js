@@ -27,22 +27,18 @@ function authenticate(response, postData) {
 	}
 
 	models.User.find({where : {login : incomingJson.login}}).then(function(user) {
-				if (user != null) {
-					var password = user.salt + incomingJson.password;
-					var passwordHash = crypto.createHash('sha256').update(
-							password).digest("hex");
-					if (passwordHash == user.password) {
-						generateSecurityToken(response, user);
-
-					} else {
-						commons.forbidden("User login or password not found",
-								response);
-					}
-				} else {
-					commons.forbidden("User login or password not found",
-							response);
-				}
-			});
+		if (user != null) {
+			var password = user.salt + incomingJson.password;
+			var passwordHash = crypto.createHash('sha256').update(password).digest("hex");
+			if (passwordHash == user.password) {
+				generateSecurityToken(response, user);
+			} else {
+				commons.forbidden("User login or password not found", response);
+			}
+		} else {
+			commons.forbidden("User login or password not found", response);
+		}
+	});
 }
 
 function validateData(json) {
@@ -71,12 +67,13 @@ function generateSecurityToken(response, user) {
 		iss : user.login,
 		exp : expires
 	}, user.salt);
-
-	commons.success(response, {
-		token : token,
-		expires : expires,
-		user : user.login
-	});
+	
+	var securityToken = {"token": token, "expires": expires, "user": user.login};
+	var stringifiedToken = "Bearer " + JSON.stringify(securityToken);
+	console.log(stringifiedToken);
+	
+	response.writeHead(200, {"Content-Type" : "text/json", "Authorization" : stringifiedToken});
+	response.end();	
 }
 
 exports.authenticate = authenticate;

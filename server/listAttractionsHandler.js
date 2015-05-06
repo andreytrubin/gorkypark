@@ -18,5 +18,4 @@ function transformAttractions(attractions) {
 	return result;
 }
 
-
 exports.getAttractions = getAttractions;

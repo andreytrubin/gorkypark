@@ -4,66 +4,45 @@ var moment = require("moment");
 
 var models = require("./models");
 var commons = require("./commons");
+var exceptions = require("./exceptions");
 
-function validateToken(response, postData) {
-	var incomingJson = null;
-	
-	if (postData == "") {
-		commons.badRequest("ERROR: no content", response);
-		return;
-	} else {
-		incomingJson = commons.getJson(postData, response, commons.badRequest);
-		if (incomingJson == null) {
-			return;
+function validateToken(resonse, authToken) {
+	try {
+		authorize(authToken);
+	} catch (e) {
+		if (e.name == "AccessDenied") {
+			commons.forbidden(e.message, response);
 		}
+		
+		if (e.name == "InvalidUser") {
+			commons.notFound(e.message, response);
+		}
+		
+		return false;
 	}
 	
-	var errorsJSON = validateData(incomingJson);
-	if (errorsJSON.errors.length > 0) {
-		commons.handleError(JSON.stringify(errorsJSON), response);
-		return;
-	}
+	return true;
+}
+
+function authorize(authToken) {
+	var objectString = authToken.slice(7);
+	var securityToken = JSON.parse(objectString);
 	
-	models.User.find({where: {login: incomingJson.user}}).then(function(user){
+	models.User.find({where: {login: securityToken.user}}).then(function(user) {
 		if (user != null) {
 			var time = moment().valueOf();
-			if (time >= incomingJson.expires) {
-				commons.forbidden("Access denied", response);
-				return false;
+			if (time >= securityToken.expires) {
+				throw new exceptions.AccessDenied("Access denied for user: " + securityToken.user);
 			} else {
-				var decoded = jwt.decode(incomingJson.token, user.salt);
-				if (decoded.iss == incomingJson.user && decoded.exp == incomingJson.expires) {
-					commons.success(response, {});
-					return true;
+				var decoded = jwt.decode(securityToken.token, user.salt);
+				if (decoded.iss == securityToken.user && decoded.exp == securityToken.expires) {
+					return;
 				}
 			}
 		} else {
-			commons.notFound("No such user in database", recponse);
-			return;
+			throw new exceptions.InvalidUser("Invalid user: " + securityToken.user);
 		}
-	});	
-}	
-
-function validateData(json) {
-	var errors = [];
-	if (json == null) {
-		errors[errors.length] = "JSON object not supplied";
-		return {
-			"errors" : errors
-		};
-	}
-	if (json.token == null || json.token == "") {
-		errors[errors.length] = "Token must not be empty";
-	}
-	if (json.expires == null || json.expires == "") {
-		errors[errors.length] = "Expires must not be empty";
-	}	
-	if (json.user == null || json.user == "") {
-		errors[errors.length] = "User must not be empty";
-	}
-	return {
-		"errors" : errors
-	};
+	});
 }
 
 exports.validateToken = validateToken;

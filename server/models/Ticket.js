@@ -4,7 +4,7 @@ module.exports = function(sequelize, DataTypes){
 			type: DataTypes.INTEGER,
 			field: "idTicket",
 			primaryKey: true,
-			autoIncremet: true
+			autoIncrement: true
 		},
 		price: {
 			type: DataTypes.INTEGER,
@@ -17,9 +17,9 @@ module.exports = function(sequelize, DataTypes){
 		validDate: {
 			type: DataTypes.DATE,
 			field: "valid_date"
-		},
+		}
 	}, {
-		tableName: 'ticket',
+		tableName: 'Ticket',
 		updatedAt: false,
 		createdAt: false
 	});

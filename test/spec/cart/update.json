@@ -1,0 +1,16 @@
+{
+	"items":[
+	    {
+			"idAttraction": 4,
+			"adultQuant": 3,
+			"childQuant": 3,
+			"status": "update"
+	    },
+		{
+			"idAttraction": 3,
+			"adultQuant": 2,
+			"childQuant": 2,
+			"status": "update"
+		}
+	]
+}
