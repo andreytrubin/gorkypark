@@ -58,13 +58,31 @@ function cartManagement(response, postData, authToken) {
 					async.each(itemsToUpdate, updateItem, function (err) {
 						console.log(err);
 					});
-					
+					//foreach for deleting items
+					async.each(itemsToDelete, deleteItem, function(err) {
+						console.log(err);
+					});
 					commons.success(response, "{}");
 				}).catch(function(err) {
 					console.log(err);
 					console.log(err.stack);
 				});
 			}
+		});
+	}
+}
+
+function getCartItems(response, request){
+	if (request == null || request == undefined) {
+		commons.badRequest("Bad Request method", response);
+		return;
+	}
+	var query = url.parse(request.url, true).query;
+	
+	if(query.id != null || query.id != undefined) {
+		models.CartItem.findAll({where: {idCart: query.id}}).then(function(items){
+		console.log(transformItems(items));
+		commons.success(response, transformItems(items));	
 		});
 	}
 }
@@ -95,12 +113,20 @@ function updateItem(item, callback) {
 	});
 }
 
-function deleteItem(itemsToDelete){
-	console.log("Deleting items");
-	for ( var i = 0; i < itemsToDelete.length; i++) {
-		var item = itemsToDelete[i];
-		models.CartItem.destroy({where: {idAttraction: item.idAttraction}});
+function deleteItem(item, callback){
+	console.log("Deleting items" + item);
+	models.CartItem.destroy({where: {idAttraction: item.idAttraction}}).catch(function(err){
+		console.log(err);
+	});
+}
+
+function transformItems(items) {
+	var result = [];
+	for ( var i = 0; i < items.length; i++) {
+		result[i] = items[i].dataValues;
 	}
+	return result;
 }
 
 exports.cartManagement = cartManagement;
+exports.getCartItems = getCartItems;

@@ -14,7 +14,8 @@ handle["/attractions"] = listAttractionsHandler.getAttractions;
 handle["/attractiondetails"] = attractionDetailHandler.getAttractionDetails;
 handle["/authenticate"] = authenticateHandler.authenticate;
 handle["/validateToken"] = tokenValidator.validateToken;
-handle["/addtocart"] = cartHandler.cartManagement;
+handle["/cart"] = cartHandler.cartManagement;
+handle["/cartitems"] = cart.getCartItems;
 
 // Start the server using exported function
 server.start(router.route, handle);
